@@ -1,6 +1,5 @@
 id,colour,flower,location
-0880,purple,single,front
-0659,purple,single,back
-0814,mauve,single,front
-0131,mauve,single,back
-0186,white,double,side
+1,mauve,single,greenhouse
+2,purple,double,greenhouse
+3,white,double,greenhouse
+4,mauve,double,greenhouse

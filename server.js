@@ -31,3 +31,39 @@ app.get("/get-plants", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 })
+
+// endpoint to add a new entry to the csv file
+app.post("/add-plant", async (req, res) => {
+  const { colour, flower, location } = req.body;
+  const data = await csvToArray();
+  const id = data.length + 1;
+  const newData = { id, colour, flower, location };
+
+  const csvWriter = createObjectCsvWriter({
+    path: csvFilePath,
+    header: [
+      { id: "id", title: "ID" },
+      { id: "colour", title: "Color" },
+      { id: "flower", title: "Flower" },
+      { id: "location", title: "Location" }
+    ],
+    append: true
+  });
+
+  fs.createReadStream(csvFilePath)
+    .pipe(csv())
+    .on("data", (row) => {
+        if (row.colour === colour && row.flower === flower && row.location === location) {
+            console.log("This entry already exists in the database");
+            res.status(400).send("This entry already exists in the database");
+            return;
+        }
+    })
+    .on("end", () => {
+        csvWriter.writeRecords([newData])
+        .then(() => {
+            console.log("New aquilegia entry added to database");
+            res.status(201).send("New aquilegia entry added to database");
+        });
+    });
+});

@@ -34,6 +34,11 @@ async function renderTable() {
     aquilegias.map((aquilegia) => {
         const row = tbody.insertRow();
         const { id, colour, flower, location } = aquilegia;
+        const idInput = document.createElement("input");
+        const colourInput = document.createElement("input");
+        const flowerInput = document.createElement("input");
+        const locationInput = document.createElement("input");
+
 
         [id, colour, flower, location].map((value, index) => {
             const cell = row.insertCell();
@@ -58,4 +63,33 @@ async function renderTable() {
     app.appendChild(table);
 }
 
+// function to add a new aquilegia entry to the database
+async function addAquilegia(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const colour = formData.get("colour");
+    const flower = formData.get("flower");
+    const location = formData.get("location");
+    
+    const response = await fetch("/add-plant", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ colour, flower, location })
+    });
+
+    if (response.ok) {
+        alert('Aquilegia added successfully');
+        console.log('Plant added successfully');
+        window.location.reload();
+    } else {
+        const message = await response.text();
+        alert(message);
+        console.error(message);
+    }
+
+}
+
 document.addEventListener("DOMContentLoaded", renderTable);
+document.getElementById("addAquilegiaForm").addEventListener("submit", addAquilegia);
