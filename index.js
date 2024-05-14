@@ -37,7 +37,8 @@ program
                 ],
                 append: true
             });
-            csvWriter.writeRecords([{id: Math.floor(Math.random() * 1000000), color: color, flower_type: flower_type, location: location}])
+            // Change ID from six-digit to four-digit reference number, starting with 0
+            csvWriter.writeRecords([{id: "0" + Math.floor(Math.random() * 1000), color: color, flower_type: flower_type, location: location}])
             .then(() => {
                 console.log('New entry added to database');
             });
@@ -53,7 +54,9 @@ program
         fs.createReadStream(DB_PATH)
         .pipe(csv())
         .on('data', (row) => {
-            console.log(row);
+            const {id, color, flower_type, location} = row;
+            // console.table(row);
+            console.log(`ID: ${id}, Color: ${color}, Flower Type: ${flower_type}, Location: ${location}`);
         })
         .on('end', () => {
             console.log('End of database');
@@ -70,7 +73,7 @@ function checkDatabase(DB_PATH) {
         console.log('Database does not exist. Creating database...');
         createDatabase(DB_PATH);
     }
-    console.log('Database exists')
+    // console.log('Database exists')
 }
 
 // Function to create a database if it does not exist

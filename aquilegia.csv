@@ -1,5 +1,6 @@
-id,color,flower_type,location
-152613,red,single,front-garden
-733277,pink,double,greenhouse
-215791,white,single,side-passage
-957455,blue,single,side-passage
+id,colour,flower,location
+0880,purple,single,front
+0659,purple,single,back
+0814,mauve,single,front
+0131,mauve,single,back
+0186,white,double,side
